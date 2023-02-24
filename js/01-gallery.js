@@ -31,15 +31,25 @@ function onGalleryElClick(event) {
   if (!event.target.classList.contains('gallery__image')) {
     return   
   }
-  const instance = basicLightbox.create(`
-    <img src="${event.target.dataset.source}" width="800" height="600">`,
+  const instance = basicLightbox.create(
+    `<img src="${event.target.dataset.source}" width="800" height="600">`,
     {
-      onClose: document.addEventListener('keydown', (event) => {
-        if (event.key === "Escape") instance.close(); 
-      }) 
+      onShow: () => document.addEventListener('keydown', onCloseModal),
+      onClose: () => document.removeEventListener('keydown', onCloseModal),
     }
-  )
-instance.show()
+    
+  );
+  instance.show();
+
+  function onCloseModal(event) {
+  if (event.code === "Escape") {
+    instance.close();
+    }
+  }
 }
+
+
+
+
 
 
